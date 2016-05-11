@@ -1,0 +1,23 @@
+drop table if exists mdl_knewton_recommendation_log;
+CREATE EXTERNAL TABLE `knewton_recommendation_log`(
+  `create_datetime` string,
+  `user_id` int,
+  `log_type` string,
+  `goal_id` string,
+  `subject` string,
+  `get_rec_time` int,
+  `eid` string,
+  `video` string,
+  `rec_id` string,
+  `assign_goal_time` int)
+PARTITIONED BY (
+  `dt` string)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY '\t'
+  LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION
+  'hdfs://BJ-DB-150:8020/model/content/knewton_recommendation_log'
+TBLPROPERTIES (
+  'orc.compress'='SNAPPY',
+  'transient_lastDdlTime'='1462852429')

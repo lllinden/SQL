@@ -1,0 +1,17 @@
+CREATE EXTERNAL TABLE `mdl_appqid_bkcid_ref`(
+  `qid` string,
+  `unit_bkc` string)
+PARTITIONED BY (
+  `subject` string,
+  `dt` string)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  'hdfs://BJ-DB-150:8020/model/content/appqid_bkcid_ref'
+TBLPROPERTIES (
+  'orc.compress'='SNAPPY',
+  'transient_lastDdlTime'='1462852429')
