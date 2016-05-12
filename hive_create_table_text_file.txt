@@ -1,15 +1,20 @@
-drop table if exists mdl_knewton_recommendation_log;
-CREATE EXTERNAL TABLE `knewton_recommendation_log`(
+drop table if exists mdl_knewton_score_log;
+CREATE EXTERNAL TABLE `knewton_score_log`(
   `create_datetime` string,
-  `user_id` int,
+  `user_id` bigint,
   `log_type` string,
-  `goal_id` string,
-  `subject` string,
-  `get_rec_time` int,
-  `eid` string,
-  `video` string,
-  `rec_id` string,
-  `assign_goal_time` int)
+  `active_time_req` string,
+  `level` string,
+  `integral` int,
+  `wrong_count` int,
+  `active_time` int,
+  `xuedou` int,
+  `integral_status` int,
+  `proficiency` float,
+  `right_count` int,
+  `get_time_spend_time` int,
+  `get_score_time` int
+)
 PARTITIONED BY (
   `dt` string)
 ROW FORMAT DELIMITED 
@@ -17,7 +22,39 @@ ROW FORMAT DELIMITED
   LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION
-  'hdfs://BJ-DB-150:8020/model/content/knewton_recommendation_log'
+  'hdfs://BJ-DB-150:8020/model/content/knewton_score_log'
 TBLPROPERTIES (
   'orc.compress'='SNAPPY',
   'transient_lastDdlTime'='1462852429')
+
+
+
+
+
+
+CREATE EXTERNAL TABLE `knewton_recommendation_log`(
+  `create_datetime` string, 
+  `user_id` bigint, 
+  `log_type` string, 
+  `goal_id` string, 
+  `subject` string, 
+  `get_rec_time` int, 
+  `eid` string, 
+  `video` string, 
+  `rec_id` string, 
+  `assign_goal_time` int)
+PARTITIONED BY ( 
+  `dt` string)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY '\t' 
+  LINES TERMINATED BY '\n' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://BJ-DB-150:8020/model/content/knewton_recommendation_log'
+TBLPROPERTIES (
+  'orc.compress'='SNAPPY', 
+  'transient_lastDdlTime'='1462962640')
+Time taken: 0.166 seconds, Fetched: 25 row(s)
